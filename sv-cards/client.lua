@@ -1,5 +1,5 @@
 ESX = exports.es_extended.getSharedObject()
-
+ox_target = exports.ox_target
 -- Kup info
 local ped = 'a_m_m_og_boss_01'
 
@@ -16,23 +16,22 @@ end
     FreezeEntityPosition(typo, true)
 end)
 
-exports.qtarget:AddBoxZone("pedal1", vector3(276.89, -1746.2, 29.45), 1.2, 1, {
-	name="pedal1",
-	heading=100.0,
-	debugPoly=false,
-	minZ=28.77834,
-	maxZ=30.87834,
-	}, {
-		options = {
-			{
-				action = function()
-                    kupInfo()
-                end,
-				icon = "fas fa-credit-card",
-				label = "Kup informacje",
-			},
-		},
-		distance = 1.5
+ox_target:addBoxZone({
+    coords = vec3(276.89, -1746.2, 29.45),
+    size = vec3(1.2, 1, 1),
+    rotation = 100,
+    drawSprite = true,
+    options = {
+        {
+            name = 'box',
+            event = 'ox_target:debug',
+	    onSelect = function()
+		kupInfo()
+	    end,
+            icon = 'fas fa-credit-card',
+            label = 'Kup informacje',
+        }
+    }
 })
 
 function kupInfo()
@@ -49,24 +48,22 @@ function kupInfo()
 end
 
 -- Tworzenie karty
-
-exports.qtarget:AddBoxZone("pedal2", vector3(1209.2, -3115.12, 5.54), 0.5, 0.5, {
-	name="pedal2",
-	heading=0.0,
-	debugPoly=false,
-	minZ=4.77834,
-	maxZ=6.87834,
-	}, {
-		options = {
-			{
-				action = function()
-                    laptok()
-                end,
-				icon = "fas fa-credit-card",
-				label = "Uruchom laptopa",
-			},
-		},
-		distance = 1.5
+ox_target:addBoxZone({
+    coords = vec3(1209.2, -3115.12, 5.54),
+    size = vec3(0.5, 0.5, 1),
+    rotation = 0,
+    drawSprite = true,
+    options = {
+        {
+            name = 'box',
+            event = 'ox_target:debug',
+	    onSelect = function()
+		laptok()
+	    end,
+            icon = 'fas fa-credit-card',
+            label = 'Uruchom laptopa',
+        }
+    }
 })
 
 function laptok()
@@ -124,22 +121,20 @@ local bankomaty = {
     506770882
 }
 
-exports.qtarget:AddTargetModel(bankomaty, {
-	options = {
-		{
-			action = function()
-                bankomaty()
-            end,
-			icon = "fas fa-box-circle-check",
-			label = "Użyj karty kredytowej",
-            item = 'fakekarta'
-		},
-	},
-	distance = 1.5
+ox_target:addModel(bankomaty, {
+    {
+        name = 'bankomaty',
+	onSelect = function()
+	    bankomaty()
+	end,
+        icon = 'fas fa-credit-card',
+        label = 'Użyj karty kredytowej',
+	items = 'fakekarta',
+    }
 })
 
 function bankomaty()
-    if lib.progressCircle({
+   if lib.progressCircle({
         duration = 2000,
         position = 'bottom',
         useWhileDead = false,
